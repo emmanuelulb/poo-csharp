@@ -1,4 +1,3 @@
-
 using TarefaAdriel.Enum;
 
 namespace TarefaAdriel.Models;
@@ -24,6 +23,11 @@ public class Usuario
     public void AlterarDadosCadastrais(string nome, DateTime dataNascimento, string email)
     {
         Nome = nome;
+        Email = email;
+        DataNascimento = dataNascimento;
+    }
+    public void AlterarDadosCadastrais( DateTime dataNascimento, string email)
+    {
         Email = email;
         DataNascimento = dataNascimento;
     }
