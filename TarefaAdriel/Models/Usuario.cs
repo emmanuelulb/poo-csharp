@@ -4,34 +4,29 @@ namespace TarefaAdriel.Models;
 
 public class Usuario
 {
-    public Usuario(int id, PerfilAcessoEnum perfilAcesso, string nome, string email)
+    public Usuario(PerfilAcessoEnum perfilAcesso,string nome, string email, DateTime dataNascimento)
     {
-        Id = id;
+        Id = Guid.NewGuid().ToString();
         PerfilAcesso = perfilAcesso;
-        Nome = nome;
         Email = email;
         Senha = GerarSenhaAleatoria();
+        Colaborador = new Colaborador(idUsuario: Id, nome, dataNascimento);
     }
 
-    public int Id { get; } 
+    public string Id { get; } 
     public PerfilAcessoEnum PerfilAcesso {get;}
-    public string Nome { get; private set; } 
+   
     public string Email { get; private set; }
-    public DateTime DataNascimento { get; private set; }
     public string Senha { get; private set; }
+
+    public Colaborador Colaborador { get; private set; }
 
     public void AlterarDadosCadastrais(string nome, DateTime dataNascimento, string email)
     {
-        Nome = nome;
         Email = email;
-        DataNascimento = dataNascimento;
+        Colaborador.AtulizarDadosPessoais(nome, dataNascimento);
     }
-    public void AlterarDadosCadastrais( DateTime dataNascimento, string email)
-    {
-        Email = email;
-        DataNascimento = dataNascimento;
-    }
-
+    
     public void AtualizarSenha(string novaSenha)
     {
         if (string.IsNullOrEmpty(novaSenha) || novaSenha.Length < 6)
@@ -43,18 +38,17 @@ public class Usuario
         Senha = novaSenha;
     }
 
+    public void DefinirSuperiorDiretoDoColaborador(Colaborador colaborador) => Colaborador.DefinirSuperiorDireto(colaborador.Id);
+
     public override string ToString()
     {
-        return $"Nome: {Nome} | Email: {Email}";
-    }
+        string textoApresentacao = string.IsNullOrEmpty(Colaborador.IdSuperior) 
+            ? $"Nome: {Colaborador.Nome} | Email: {Email}"
+            : $"Nome: {Colaborador.Nome} | Email: {Email} | Código do Gestor: {Colaborador.ObterCodigoGestorResponsavelFormatado()}";
+        
+        return textoApresentacao;
+    }   
 
-    private string GerarSenhaAleatoria()
-    {
-        Guid guidSenha = Guid.NewGuid();
-        string senhaAleatoria = guidSenha.ToString().Substring(1,7);
-
-        return senhaAleatoria + Id.ToString();
-    }
+    private string GerarSenhaAleatoria() => Guid.NewGuid().ToString().Substring(1,7);
 
 }
-
