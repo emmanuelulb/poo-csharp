@@ -1,8 +1,8 @@
-namespace TarefaAdriel.Enum;
+namespace TarefaAdriel.Enums;
 
     public enum CargoEnum
     {
         Gerente = 1,
-        Diretor = 2,
+        Funcionario = 2,
     }
 

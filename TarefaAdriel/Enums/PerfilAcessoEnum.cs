@@ -1,4 +1,4 @@
-namespace TarefaAdriel.Enum;
+namespace TarefaAdriel.Enums;
 public enum PerfilAcessoEnum
 {
     Administrador = 1,

@@ -1,11 +1,10 @@
-using System.Threading.Channels;
-using TarefaAdriel.Enum;
+using TarefaAdriel.Enums;
 
 namespace TarefaAdriel.Models;
 
 public abstract class Colaborador
 {
-    public Colaborador (string idUsuario, string nome, DateTime dataNascimento)
+    public Colaborador(string idUsuario, string nome, DateTime dataNascimento)
     {
         Id = Guid.NewGuid().ToString();
         IdUsuario = idUsuario;
@@ -15,19 +14,55 @@ public abstract class Colaborador
 
     public string Id { get; }
     public string IdUsuario { get; }
-    public string Nome { get; private set; } 
+    public string Nome { get; private set; }
     public DateTime DataNascimento { get; private set; }
-    public string IdSuperior { get; private set; }
-    
-    public abstract CargoEnum Cargo { get; }
+    public Gerente Superior { get; private set; }
 
-    public void DefinirSuperiorDireto (string idSuperior) => IdSuperior = idSuperior;
-
-    public string ObterCodigoGestorResponsavelFormatado() => IdSuperior.Substring(1, 7);
+    public abstract CargoEnum Cargo { get; protected set; }
+    public List<Tarefa> Tarefas { get; } = [];
 
     public void AtulizarDadosPessoais(string nome, DateTime dataNascimento)
     {
         Nome = nome;
         DataNascimento = dataNascimento;
+    }
+
+    public void DefinirSuperiorDireto(Colaborador colaborador)
+    {
+        if (colaborador is not Gerente gerente)
+        {
+            Console.WriteLine("O colaborador deve ser um gerente para ser definido como superior direto.");
+            return;
+        }
+
+        Superior = gerente;
+    }
+
+    public void AdicionarTarefa(Tarefa tarefa) => Tarefas.Add(tarefa);
+
+    public List<Tarefa> ListarTarefas()
+    {
+        if (Tarefas.Count == 0)
+        {
+            Console.WriteLine("Nenhuma tarefa atribuida a este colaborador.");
+            return [];
+        }
+        return Tarefas;
+    }
+
+    public List<Tarefa> ListarTarefas(TarefaStatusEnum status)
+    {
+        if (Tarefas.Count == 0)
+        {
+            Console.WriteLine("Nenhuma tarefa atribuida a este colaborador.");
+            return [];
+        }
+
+        return Tarefas.Where(t => t.Status == status).ToList();
+    }
+
+    public override string ToString()
+    {
+        return Superior
     }
 }

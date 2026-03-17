@@ -1,4 +1,4 @@
-using TarefaAdriel.Enum;
+using TarefaAdriel.Enums;
 
 namespace TarefaAdriel.Models;
 
@@ -10,7 +10,7 @@ public class Usuario
         PerfilAcesso = perfilAcesso;
         Email = email;
         Senha = GerarSenhaAleatoria();
-        Colaborador = new Colaborador(idUsuario: Id, nome, dataNascimento);
+        Colaborador = CriarColaborador(perfilAcesso, nome, dataNascimento);
     }
 
     public string Id { get; } 
@@ -38,17 +38,24 @@ public class Usuario
         Senha = novaSenha;
     }
 
-    public void DefinirSuperiorDiretoDoColaborador(Colaborador colaborador) => Colaborador.DefinirSuperiorDireto(colaborador.Id);
+    public void DefinirSuperiorDiretoDoColaborador(Colaborador colaborador) => Colaborador.DefinirSuperiorDireto(colaborador);
 
     public override string ToString()
     {
-        string textoApresentacao = string.IsNullOrEmpty(Colaborador.IdSuperior) 
+        return Colaborador?.Superior is null
             ? $"Nome: {Colaborador.Nome} | Email: {Email}"
-            : $"Nome: {Colaborador.Nome} | Email: {Email} | Código do Gestor: {Colaborador.ObterCodigoGestorResponsavelFormatado()}";
-        
-        return textoApresentacao;
+            : $"Nome: {Colaborador.Nome} | Email: {Email} | Gestor: {Colaborador.Superior.Nome}";
     }   
 
     private string GerarSenhaAleatoria() => Guid.NewGuid().ToString().Substring(1,7);
 
+    private Colaborador CriarColaborador(PerfilAcessoEnum perfilAcesso, string nome, DateTime dataNascimento)
+    {
+        return perfilAcesso switch
+        {
+            PerfilAcessoEnum.Gerente => new Gerente (Id, nome, dataNascimento),
+            PerfilAcessoEnum.Funcionario => new Funcionario(Id, nome, dataNascimento),
+            _ => null
+        };
+    }
 }
