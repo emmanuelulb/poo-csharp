@@ -42,11 +42,14 @@ public class Usuario
 
     public override string ToString()
     {
-        return Colaborador?.Superior is null
-            ? $"Nome: {Colaborador.Nome} | Email: {Email}"
-            : $"Nome: {Colaborador.Nome} | Email: {Email} | Gestor: {Colaborador.Superior.Nome}";
-    }   
+        var stringColaborador = Colaborador?.ToString();
 
+        return string.IsNullOrEmpty(stringColaborador)
+        ? $"Email: {Email}, Perfil de Acesso: {PerfilAcesso}"
+        : Colaborador.Superior is null
+            ? stringColaborador + $", Email: {Email}"
+            : stringColaborador;
+    }
     private string GerarSenhaAleatoria() => Guid.NewGuid().ToString().Substring(1,7);
 
     private Colaborador CriarColaborador(PerfilAcessoEnum perfilAcesso, string nome, DateTime dataNascimento)

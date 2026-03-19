@@ -63,6 +63,8 @@ public abstract class Colaborador
 
     public override string ToString()
     {
-        return Superior
+        return Superior is null
+            ? $"Nome: {Nome}, Cargo: {Cargo}"
+            : $"Nome: {Nome}, Cargo: {Cargo}, Gestor: {Superior.Nome}";
     }
 }

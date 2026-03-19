@@ -29,9 +29,21 @@ using TarefaAdriel.Models;
 
 
 //Terceira aula 1h34
+// Usuario usuarioGestor = new Usuario(PerfilAcessoEnum.Gerente, "Arthur lanches", "arthur@lanches.com", DateTime.Parse("1995-05-05"));
+// Usuario usuarioSubordinado = new Usuario(PerfilAcessoEnum.Funcionario, "Joao", "joao@email.com", DateTime.Parse("1990-01-01"));
+
+// usuarioSubordinado.DefinirSuperiorDiretoDoColaborador(usuarioGestor.Colaborador);
+// Console.WriteLine(usuarioGestor);
+// Console.WriteLine(usuarioSubordinado);
+
+
+//terceira aula 1h59
 Usuario usuarioGestor = new Usuario(PerfilAcessoEnum.Gerente, "Arthur lanches", "arthur@lanches.com", DateTime.Parse("1995-05-05"));
 Usuario usuarioSubordinado = new Usuario(PerfilAcessoEnum.Funcionario, "Joao", "joao@email.com", DateTime.Parse("1990-01-01"));
+Usuario administrador = new Usuario(PerfilAcessoEnum.Administrador, string.Empty, "adm@email.com", DateTime.Now);
 
 usuarioSubordinado.DefinirSuperiorDiretoDoColaborador(usuarioGestor.Colaborador);
+
 Console.WriteLine(usuarioGestor);
 Console.WriteLine(usuarioSubordinado);
+
